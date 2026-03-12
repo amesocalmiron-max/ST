@@ -1,6 +1,7 @@
 <!-- POSITION: RIGHT -->
 <style>
   .gantz-sst {
+    position: relative;
     --panel-a: rgba(10, 14, 20, 0.92);
     --panel-b: rgba(20, 24, 32, 0.96);
     --line: rgba(188, 72, 88, 0.34);
@@ -26,6 +27,7 @@
 
   .gantz-sst .sst-rail,
   .gantz-sst .sst-cards {
+    position: relative;
     grid-column: 1;
     grid-row: 1;
     width: 100%;
@@ -87,6 +89,7 @@
   }
 
   .gantz-sst .sst-cards {
+    position: relative;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -264,21 +267,21 @@
 
 <div class="gantz-sst">
   <div class="sst-rail">
-    <button class="sim-tracker-tab sst-player" data-character="{{playerState.id}}" title="{{playerState.name}}">
-      <span class="sst-glyph">{{#if playerState.icon_key}}{{playerState.icon_key}}{{else}}{{playerState.name}}{{/if}}</span>
+    <button class="sim-tracker-tab sst-player active" data-character="{{playerState.id}}" title="{{playerState.name}}">
+      <span class="sst-glyph">{{#if playerState.icon_key}}{{playerState.icon_key}}{{else}}{{initials playerState.name}}{{/if}}</span>
       <span class="sst-mini">{{playerState.tracked_tier}}</span>
     </button>
 
     {{#each characters}}
     <button class="sim-tracker-tab" data-character="{{id}}" title="{{name}}">
-      <span class="sst-glyph">{{#if icon_key}}{{icon_key}}{{else}}{{name}}{{/if}}</span>
+      <span class="sst-glyph">{{#if icon_key}}{{icon_key}}{{else}}{{initials name}}{{/if}}</span>
       <span class="sst-mini">{{tracked_tier}}</span>
     </button>
     {{/each}}
   </div>
 
   <div class="sst-cards">
-    <section class="sim-tracker-card sst-player" data-character="{{playerState.id}}">
+    <section class="sim-tracker-card sst-player active" data-character="{{playerState.id}}">
       <div class="sst-head">
         <div class="sst-name">{{playerState.name}}</div>
         <div>
@@ -521,9 +524,15 @@
     });
   }
 
-  tabs.forEach(function (tab, i) {
+  tabs.forEach(function (tab) {
     tab.addEventListener('click', function () { activate(tab.dataset.character); });
-    if (i === 0) activate(tab.dataset.character);
   });
+
+  const pre = root.querySelector('.sim-tracker-tab.active[data-character]');
+  if (pre) {
+    activate(pre.dataset.character);
+  } else if (tabs.length) {
+    activate(tabs[0].dataset.character);
+  }
 })();
 </script>
