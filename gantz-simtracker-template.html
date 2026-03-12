@@ -1,0 +1,440 @@
+<!-- TEMPLATE NAME: GANTZ SimTracker v5 (Right Rail / 3 Tabs) -->
+<!-- AUTHOR: OpenAI -->
+<!-- POSITION: RIGHT -->
+<!-- TABS_TYPE: toggle -->
+
+<!-- CARD_TEMPLATE_START -->
+<style>
+  .sim-tracker-container.gantz-v5 {
+    --bg: #090c12;
+    --panel: rgba(17, 22, 33, 0.82);
+    --panel-strong: rgba(20, 28, 42, 0.95);
+    --line: rgba(156, 181, 230, 0.2);
+    --text: #eef3ff;
+    --sub: #9eabc9;
+    --accent: #62a7ff;
+    --danger: #ff5f7f;
+    --ok: #56d39b;
+    --warn: #f3be6a;
+    --glass-blur: blur(16px);
+
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    pointer-events: none !important;
+    font-family: Inter, "Segoe UI", Roboto, system-ui, sans-serif;
+    color: var(--text);
+  }
+
+  .gantz-v5 .sim-tracker-tabs,
+  .gantz-v5 .sim-tracker-cards-wrapper {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .gantz-v5 .sim-tracker-tabs {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: none !important;
+  }
+
+  .gantz-v5 .sim-tracker-tab {
+    pointer-events: auto !important;
+    width: 56px;
+    height: 56px;
+    margin-right: 8px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: linear-gradient(160deg, rgba(35, 45, 65, 0.92), rgba(16, 22, 34, 0.92));
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    position: relative;
+  }
+
+  .gantz-v5 .sim-tracker-tab:hover { transform: translateX(-4px); border-color: rgba(154, 198, 255, 0.5); }
+  .gantz-v5 .sim-tracker-tab.active {
+    transform: translateX(-356px);
+    border-color: rgba(154, 198, 255, 0.75);
+    box-shadow: 0 0 0 1px rgba(154, 198, 255, 0.35), 0 12px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .gantz-v5 .tab-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(190, 215, 255, 0.35);
+    background: radial-gradient(circle at 30% 30%, rgba(116, 171, 255, 0.9), rgba(50, 84, 140, 0.95));
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+
+  .gantz-v5 .tab-player::after {
+    content: "P";
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    font-size: 9px;
+    background: rgba(96, 174, 255, 0.28);
+    border: 1px solid rgba(170, 212, 255, 0.45);
+    border-radius: 999px;
+    padding: 1px 4px;
+  }
+
+  .gantz-v5 .sim-tracker-cards-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    pointer-events: none !important;
+  }
+
+  .gantz-v5 .sim-tracker-card {
+    pointer-events: auto !important;
+    width: min(360px, 92vw);
+    max-height: 88vh;
+    overflow: auto;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(105%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 220ms ease, opacity 220ms ease;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: linear-gradient(165deg, var(--panel), var(--panel-strong));
+    backdrop-filter: var(--glass-blur);
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.4);
+    padding: 14px;
+  }
+
+  .gantz-v5 .sim-tracker-card.active {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .gantz-v5 .head {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .gantz-v5 .name {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .gantz-v5 .meta-row,
+  .gantz-v5 .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .gantz-v5 .chip {
+    font-size: 11px;
+    color: var(--sub);
+    border: 1px solid rgba(163, 185, 231, 0.25);
+    background: rgba(90, 110, 150, 0.1);
+    border-radius: 999px;
+    padding: 3px 8px;
+  }
+
+  .gantz-v5 .tab-row {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .gantz-v5 .tab-btn {
+    background: rgba(74, 95, 132, 0.2);
+    border: 1px solid rgba(146, 170, 217, 0.25);
+    color: #d2defa;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 6px;
+    cursor: pointer;
+  }
+
+  .gantz-v5 .tab-btn.active {
+    background: rgba(90, 146, 230, 0.3);
+    border-color: rgba(168, 208, 255, 0.6);
+    color: #f2f7ff;
+  }
+
+  .gantz-v5 .domain { display: none; margin-top: 10px; }
+  .gantz-v5 .domain.active { display: block; }
+
+  .gantz-v5 .section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--sub);
+    margin: 8px 0 6px;
+  }
+
+  .gantz-v5 .meter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .gantz-v5 .meter {
+    border: 1px solid rgba(149, 172, 218, 0.2);
+    border-radius: 10px;
+    padding: 6px;
+    background: rgba(85, 104, 140, 0.08);
+  }
+
+  .gantz-v5 .meter-head { display: flex; justify-content: space-between; font-size: 11px; color: #d8e3ff; }
+  .gantz-v5 .bar { height: 5px; border-radius: 999px; background: rgba(147, 175, 226, 0.2); margin-top: 5px; overflow: hidden; }
+  .gantz-v5 .fill { height: 100%; background: linear-gradient(90deg, #678ff7, #67d1f7); }
+
+  .gantz-v5 .kv { display: grid; gap: 6px; }
+  .gantz-v5 .row { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; }
+  .gantz-v5 .row .k { color: var(--sub); }
+  .gantz-v5 .row .v { color: var(--text); text-align: right; }
+
+  .gantz-v5 .list { display: grid; gap: 6px; }
+  .gantz-v5 .item {
+    border: 1px solid rgba(146, 172, 220, 0.2);
+    background: rgba(84, 105, 144, 0.08);
+    border-radius: 10px;
+    padding: 7px;
+    font-size: 12px;
+  }
+
+  .gantz-v5 .muted { color: var(--sub); font-size: 12px; }
+
+  @media (max-width: 720px) {
+    .gantz-v5 .sim-tracker-tab.active { transform: translateX(-304px); }
+    .gantz-v5 .sim-tracker-card { width: min(308px, 92vw); }
+    .gantz-v5 .meter-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="sim-tracker-container gantz-v5">
+  <div class="sim-tracker-tabs">
+    <button class="sim-tracker-tab tab-player" data-entity="player" title="{{playerState.name}}">
+      <span class="tab-badge">{{initials playerState.name}}</span>
+    </button>
+    {{#each characters}}
+    <button class="sim-tracker-tab" data-entity="npc-{{@index}}" title="{{name}}">
+      <span class="tab-badge">{{initials name}}</span>
+    </button>
+    {{/each}}
+  </div>
+
+  <div class="sim-tracker-cards-wrapper">
+    <section class="sim-tracker-card" data-entity="player">
+      <div class="head">
+        <div class="name">{{playerState.name}}</div>
+        <div class="meta-row">
+          <span class="chip">{{playerState.sex}}</span>
+          <span class="chip">{{playerState.tracked_tier}}</span>
+          <span class="chip">{{playerState.status}}</span>
+          <span class="chip">{{playerState.presence}}</span>
+        </div>
+        <div class="tab-row">
+          <button class="tab-btn active" data-tab="dating">Dating</button>
+          <button class="tab-btn" data-tab="combat">Combat</button>
+          <button class="tab-btn" data-tab="world">World</button>
+        </div>
+      </div>
+
+      <div class="domain active" data-tab="dating">
+        <div class="section-title">Social Core</div>
+        <div class="meter-grid">
+          <div class="meter"><div class="meter-head"><span>affinity</span><span>{{playerState.social.affinity}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.affinity}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>desire</span><span>{{playerState.social.desire}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.desire}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>trust</span><span>{{playerState.social.trust}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.trust}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>comfort</span><span>{{playerState.social.comfort}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.comfort}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>intimacy</span><span>{{playerState.social.intimacy}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.intimacy}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>jealousy</span><span>{{playerState.social.jealousy}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.jealousy}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>tension</span><span>{{playerState.social.tension}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.tension}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>attachment</span><span>{{playerState.social.attachment}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.attachment}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>openness</span><span>{{playerState.social.openness}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.openness}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>dependency</span><span>{{playerState.social.dependency}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.dependency}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>loneliness</span><span>{{playerState.social.loneliness}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.loneliness}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>bond_need</span><span>{{playerState.social.bond_need}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.bond_need}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>arousal</span><span>{{playerState.social.arousal}}</span></div><div class="bar"><div class="fill" style="width: {{playerState.social.arousal}}%"></div></div></div>
+        </div>
+
+        <div class="section-title">Mask & Reaction</div>
+        <div class="kv">
+          <div class="row"><span class="k">Mask</span><span class="v">{{playerState.social.mask}}</span></div>
+          <div class="row"><span class="k">Reaction</span><span class="v">{{playerState.social.reaction_icon}}</span></div>
+        </div>
+
+        <div class="section-title">Notable Links</div>
+        {{#if playerState.social.notable_links}}
+        <div class="list">
+          {{#each playerState.social.notable_links}}
+          <div class="item">
+            <div><strong>{{target_id}}</strong> · {{bond}}</div>
+            <div class="muted">aff {{affinity}} · trust {{trust}} · desire {{desire}} · tension {{tension}}</div>
+          </div>
+          {{/each}}
+        </div>
+        {{else}}<div class="muted">No notable links.</div>{{/if}}
+      </div>
+
+      <div class="domain" data-tab="combat">
+        <div class="kv">
+          <div class="row"><span class="k">Health</span><span class="v">{{playerState.combat.health}}</span></div>
+          <div class="row"><span class="k">Weapon</span><span class="v">{{playerState.combat.weapon}}</span></div>
+          <div class="row"><span class="k">Readiness</span><span class="v">{{playerState.combat.combat_readiness}}</span></div>
+          <div class="row"><span class="k">Panic</span><span class="v">{{playerState.combat.panic}}</span></div>
+          <div class="row"><span class="k">Aggression</span><span class="v">{{playerState.combat.aggression}}</span></div>
+          <div class="row"><span class="k">Mental</span><span class="v">{{playerState.combat.mental_state}}</span></div>
+          <div class="row"><span class="k">Downed</span><span class="v">{{playerState.combat.downed}}</span></div>
+        </div>
+
+        <div class="section-title">Injuries</div>
+        {{#if playerState.combat.injuries}}
+        <div class="list">
+          {{#each playerState.combat.injuries}}
+          <div class="item">{{label}} · {{severity}} · treated: {{treated}}</div>
+          {{/each}}
+        </div>
+        {{else}}<div class="muted">No injuries.</div>{{/if}}
+      </div>
+
+      <div class="domain" data-tab="world">
+        <div class="kv">
+          <div class="row"><span class="k">Role</span><span class="v">{{playerState.world.role_label}}</span></div>
+          <div class="row"><span class="k">Age</span><span class="v">{{playerState.world.age}}</span></div>
+          <div class="row"><span class="k">Occupation</span><span class="v">{{playerState.world.occupation}}</span></div>
+          <div class="row"><span class="k">Group</span><span class="v">{{playerState.world.group}}</span></div>
+          <div class="row"><span class="k">Availability</span><span class="v">{{playerState.world.availability}}</span></div>
+        </div>
+        <div class="section-title">Bio</div>
+        <div class="item">{{playerState.world.bio_short}}</div>
+        <div class="section-title">Appearance</div>
+        <div class="item">{{playerState.world.appearance_short}}</div>
+      </div>
+    </section>
+
+    {{#each characters}}
+    <section class="sim-tracker-card" data-entity="npc-{{@index}}">
+      <div class="head">
+        <div class="name">{{name}}</div>
+        <div class="meta-row">
+          <span class="chip">{{sex}}</span>
+          <span class="chip">{{tracked_tier}}</span>
+          <span class="chip">{{status}}</span>
+          <span class="chip">{{presence}}</span>
+        </div>
+        <div class="tab-row">
+          <button class="tab-btn active" data-tab="dating">Dating</button>
+          <button class="tab-btn" data-tab="combat">Combat</button>
+          <button class="tab-btn" data-tab="world">World</button>
+        </div>
+      </div>
+
+      <div class="domain active" data-tab="dating">
+        <div class="meter-grid">
+          <div class="meter"><div class="meter-head"><span>affinity</span><span>{{social.affinity}}</span></div><div class="bar"><div class="fill" style="width: {{social.affinity}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>desire</span><span>{{social.desire}}</span></div><div class="bar"><div class="fill" style="width: {{social.desire}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>trust</span><span>{{social.trust}}</span></div><div class="bar"><div class="fill" style="width: {{social.trust}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>comfort</span><span>{{social.comfort}}</span></div><div class="bar"><div class="fill" style="width: {{social.comfort}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>intimacy</span><span>{{social.intimacy}}</span></div><div class="bar"><div class="fill" style="width: {{social.intimacy}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>jealousy</span><span>{{social.jealousy}}</span></div><div class="bar"><div class="fill" style="width: {{social.jealousy}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>tension</span><span>{{social.tension}}</span></div><div class="bar"><div class="fill" style="width: {{social.tension}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>attachment</span><span>{{social.attachment}}</span></div><div class="bar"><div class="fill" style="width: {{social.attachment}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>openness</span><span>{{social.openness}}</span></div><div class="bar"><div class="fill" style="width: {{social.openness}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>dependency</span><span>{{social.dependency}}</span></div><div class="bar"><div class="fill" style="width: {{social.dependency}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>loneliness</span><span>{{social.loneliness}}</span></div><div class="bar"><div class="fill" style="width: {{social.loneliness}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>bond_need</span><span>{{social.bond_need}}</span></div><div class="bar"><div class="fill" style="width: {{social.bond_need}}%"></div></div></div>
+          <div class="meter"><div class="meter-head"><span>arousal</span><span>{{social.arousal}}</span></div><div class="bar"><div class="fill" style="width: {{social.arousal}}%"></div></div></div>
+        </div>
+        <div class="section-title">Mask / Reaction</div>
+        <div class="kv">
+          <div class="row"><span class="k">Mask</span><span class="v">{{social.mask}}</span></div>
+          <div class="row"><span class="k">Reaction</span><span class="v">{{social.reaction_icon}}</span></div>
+        </div>
+        <div class="section-title">Notable Links</div>
+        {{#if social.notable_links}}
+        <div class="list">{{#each social.notable_links}}<div class="item"><div><strong>{{target_id}}</strong> · {{bond}}</div><div class="muted">aff {{affinity}} · trust {{trust}} · desire {{desire}} · tension {{tension}}</div></div>{{/each}}</div>
+        {{else}}<div class="muted">No notable links.</div>{{/if}}
+      </div>
+
+      <div class="domain" data-tab="combat">
+        <div class="kv">
+          <div class="row"><span class="k">Health</span><span class="v">{{combat.health}}</span></div>
+          <div class="row"><span class="k">Weapon</span><span class="v">{{combat.weapon}}</span></div>
+          <div class="row"><span class="k">Readiness</span><span class="v">{{combat.combat_readiness}}</span></div>
+          <div class="row"><span class="k">Panic</span><span class="v">{{combat.panic}}</span></div>
+          <div class="row"><span class="k">Aggression</span><span class="v">{{combat.aggression}}</span></div>
+          <div class="row"><span class="k">Mental</span><span class="v">{{combat.mental_state}}</span></div>
+          <div class="row"><span class="k">Downed</span><span class="v">{{combat.downed}}</span></div>
+        </div>
+        <div class="section-title">Injuries</div>
+        {{#if combat.injuries}}
+        <div class="list">{{#each combat.injuries}}<div class="item">{{label}} · {{severity}} · treated: {{treated}}</div>{{/each}}</div>
+        {{else}}<div class="muted">No injuries.</div>{{/if}}
+      </div>
+
+      <div class="domain" data-tab="world">
+        <div class="kv">
+          <div class="row"><span class="k">Role</span><span class="v">{{world.role_label}}</span></div>
+          <div class="row"><span class="k">Age</span><span class="v">{{world.age}}</span></div>
+          <div class="row"><span class="k">Occupation</span><span class="v">{{world.occupation}}</span></div>
+          <div class="row"><span class="k">Group</span><span class="v">{{world.group}}</span></div>
+          <div class="row"><span class="k">Availability</span><span class="v">{{world.availability}}</span></div>
+        </div>
+        <div class="section-title">Bio</div>
+        <div class="item">{{world.bio_short}}</div>
+        <div class="section-title">Appearance</div>
+        <div class="item">{{world.appearance_short}}</div>
+      </div>
+    </section>
+    {{/each}}
+  </div>
+</div>
+
+<script>
+(function () {
+  const root = document.currentScript?.previousElementSibling;
+  if (!root) return;
+
+  const tabs = root.querySelectorAll('.sim-tracker-tab');
+  const cards = root.querySelectorAll('.sim-tracker-card');
+
+  function activateEntity(entityKey) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.entity === entityKey));
+    cards.forEach(c => c.classList.toggle('active', c.dataset.entity === entityKey));
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => activateEntity(tab.dataset.entity));
+    if (i === 0) tab.classList.add('active');
+  });
+  if (cards[0]) cards[0].classList.add('active');
+
+  cards.forEach(card => {
+    const tabButtons = card.querySelectorAll('.tab-btn');
+    const domains = card.querySelectorAll('.domain');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        tabButtons.forEach(b => b.classList.toggle('active', b === btn));
+        domains.forEach(d => d.classList.toggle('active', d.dataset.tab === target));
+      });
+    });
+  });
+})();
+</script>
+<!-- CARD_TEMPLATE_END -->
