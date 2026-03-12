@@ -1,64 +1,58 @@
-# GANTZ SimTracker JSON Preset Task for GPT Codex v5
+# GANTZ SimTracker Codex JSON Task v5
 
-## 0. Purpose
-
-This document is an implementation handoff for GPT Codex.
-
-This is not a brainstorming document.
-This is not permission to redesign the schema.
-This is not an HTML task.
-
-Your job is to create the canonical JSON preset for the GANTZ SimTracker build.
-The preset must preserve a strict, validator-friendly, continuity-first state model.
-
-The tracker is not decorative UI.
-It is an authoritative state-layer / continuity-layer for the GANTZ GM build.
-
----
-
-## 1. Required source of truth
-
-Before editing, read these existing files in the workspace and use them as the only relevant references:
-
+## Scope
+Use only these files as source of truth:
 - `GANTZ_SIMTRACKER_HANDOFF_FOR_NEW_CHAT.md`
 - `gantz-simtracker-preset_v4.json`
 
-Interpret them conservatively.
-If they contain ambiguity, follow this v5 task document.
-This v5 task supersedes earlier contradictory notes.
+Goal: produce one final preset file `gantz-simtracker-preset_v5.json` for SimTracker.
 
 ---
 
-## 2. Deliverable
-
-Create exactly one new preset file:
-
+## 1) Deliverable (exact)
+Create exactly one JSON preset file:
 - `gantz-simtracker-preset_v5.json`
 
-The result must:
-- keep working preset-wrapper structure,
-- remain compatible with strict `disp` JSON output,
-- preserve one canonical entity shape,
-- preserve one shared social schema for player and NPCs,
-- preserve compact combat,
-- preserve minimal world/bio,
-- preserve conservative updater behavior.
-
-Do not create multiple alternatives.
-Do not create exploratory drafts.
-Produce one final canonical preset.
+It must be a real SimTracker preset wrapper (not a schema note), preserving strict `disp` output behavior.
 
 ---
 
-## 3. Non-negotiable wrapper compatibility
+## 2) Non-negotiable architecture
 
-The output must be a real preset JSON, not a schema-only note.
-It must keep the usual wrapper-level preset structure used by working SimTracker presets.
+### Root model (must remain exact)
+```json
+{
+  "worldData": {},
+  "playerState": {},
+  "characters": []
+}
+```
 
-### 3.1 Required wrapper-level keys
+Root key order is fixed:
+1. `worldData`
+2. `playerState`
+3. `characters`
 
-Include wrapper-level keys of this family:
+Do not:
+- remove `playerState`
+- move player into `characters`
+- split root model by mode
+- create player/NPC schema split
 
+### Per-entity domain model (exactly 3)
+Every tracked entity (`playerState` and each item in `characters`) must contain:
+- `social` (richest)
+- `combat` (compact)
+- `world` (smallest)
+
+Do not add a fourth domain block.
+Do not introduce a top-level `relations` block.
+Relationship data lives in `social.notable_links` only.
+
+---
+
+## 3) Wrapper compatibility requirements
+Preset wrapper must include:
 - `templateName`
 - `templateAuthor`
 - `templatePosition`
@@ -69,94 +63,19 @@ Include wrapper-level keys of this family:
 - `trackerDesc`
 - `sysPrompt`
 
-Keep the wrapper practical and close to the working `v4` style.
-Do not strip it down into abstract architecture JSON.
+HTML handshake:
+- keep `htmlTemplate` empty
+- set `extSettings.templateFile` to `gantz-simtracker-template.html`
 
-### 3.2 External HTML handshake
-
-This JSON task must not implement HTML.
-However, it must correctly handshake with the external template.
-
-Use this policy:
-- keep `htmlTemplate` empty unless runtime embedding is explicitly required,
-- keep `extSettings.templateFile = "gantz-simtracker-template.html"`,
-- do not fabricate placeholder HTML,
-- do not move visual rules into narrative state.
-
-### 3.3 Strict `disp` compatibility
-
-The preset instructions must enforce:
-- exactly one final `disp` code block,
-- strict JSON inside the block,
-- no comments,
-- no trailing commas,
-- no markdown inside the JSON,
-- no text after the final tracker block.
+`disp` contract in `sysPrompt` must enforce:
+- exactly one final `disp` code block
+- strict JSON inside
+- no extra text after block
 
 ---
 
-## 4. Canonical architecture
-
-### 4.1 Root model must remain exact
-
-The root tracker state must remain exactly:
-
-```json
-{
-  "worldData": {},
-  "playerState": {},
-  "characters": []
-}
-```
-
-Do not:
-- remove `playerState`,
-- move player into `characters`,
-- split the root by mode,
-- create sex-specific root schemas,
-- create separate combat/social root branches.
-
-### 4.2 Stable root key order
-
-Root key order must remain:
-1. `worldData`
-2. `playerState`
-3. `characters`
-
-### 4.3 Per-entity domain model must be exactly three blocks
-
-Every tracked entity must use exactly these three domain blocks:
-- `social`
-- `combat`
-- `world`
-
-No fourth domain block.
-No top-level `relations` block.
-No `gantz` block.
-No `story` block.
-
-Relationship data must live only in `social.notable_links`.
-Do not duplicate relationship semantics in a separate container.
-
-### 4.4 State and display must remain separate
-
-Do not encode the following as narrative state:
-- card colors,
-- animation state,
-- selected tab,
-- open/closed drawer state,
-- layout choices,
-- glass/neon theme tokens,
-- per-card UI visibility toggles.
-
-UI belongs to the HTML task.
-
----
-
-## 5. Canonical entity shape
-
-For `playerState` and every item in `characters[]`, use exactly this top-level order:
-
+## 4) Entity top-level shape (shared for player and NPCs)
+Use this top-level order:
 1. `id`
 2. `name`
 3. `sex`
@@ -169,61 +88,22 @@ For `playerState` and every item in `characters[]`, use exactly this top-level o
 10. `combat`
 11. `world`
 
-### 5.1 Top-level enums
+Enums:
+- `sex`: `male | female | unknown`
+- `ui_variant`: `male | female | neutral | custom`
+- `tracked_tier`: `primary | major | support | temporary`
+- `status`: `active | inactive | missing | down | dead | revived`
+- `presence`: `onscreen | offscreen | room | mission | location_unknown`
 
-#### `sex`
-- `male`
-- `female`
-- `unknown`
-
-#### `ui_variant`
-- `male`
-- `female`
-- `neutral`
-- `custom`
-
-#### `tracked_tier`
-- `primary`
-- `major`
-- `support`
-- `temporary`
-
-Rules:
-- `primary` is reserved for the player.
-- NPCs may use only `major`, `support`, or `temporary`.
-
-#### `status`
-- `active`
-- `inactive`
-- `missing`
-- `down`
-- `dead`
-- `revived`
-
-#### `presence`
-- `onscreen`
-- `offscreen`
-- `room`
-- `mission`
-- `location_unknown`
-
-### 5.2 Naming policy
-
-- `id` must be stable canonical snake_case English.
-- `icon_key` must be stable canonical snake_case English.
-- JSON keys must remain English.
-- Enum values must remain English.
-- Short human-facing descriptive text may be Russian.
+Player invariants:
+- `playerState.id = "player"`
+- `playerState.tracked_tier = "primary"`
+- player exists exactly once
 
 ---
 
-## 6. `worldData` block
-
-`worldData` stores current scene/world state.
-It is not a substitute for per-character `world`.
-
-### 6.1 Required fields
-
+## 5) `worldData` block (global scene state)
+Required keys:
 - `mode`
 - `submode`
 - `story_date`
@@ -243,85 +123,24 @@ It is not a substitute for per-character `world`.
 - `last_mission_result`
 - `scene_focus`
 
-### 6.2 Enums
+Enums:
+- `mode`: `daily | room | mission | aftermath`
+- `call_status`: `silent | foreshadowed | called | in_room | deployed | returning`
+- `threat_level`: `low | medium | high | extreme`
+- `public_heat`: `low | medium | high | critical`
+- `last_mission_result`: `none | survived | injured | failed | partial_success | wiped`
+- `scene_focus`: `dating | combat | world | mixed`
 
-#### `mode`
-- `daily`
-- `room`
-- `mission`
-- `aftermath`
-
-#### `call_status`
-- `silent`
-- `foreshadowed`
-- `called`
-- `in_room`
-- `deployed`
-- `returning`
-
-#### `threat_level`
-- `low`
-- `medium`
-- `high`
-- `extreme`
-
-#### `public_heat`
-- `low`
-- `medium`
-- `high`
-- `critical`
-
-#### `last_mission_result`
-- `none`
-- `survived`
-- `injured`
-- `failed`
-- `partial_success`
-- `wiped`
-
-#### `scene_focus`
-- `dating`
-- `combat`
-- `world`
-- `mixed`
-
-### 6.3 Rules
-
-- `story_date` and `story_time` are in-world chronology fields.
-- `active_cast` includes only directly present or immediately influential entities.
-- `submode` is a controlled open snake_case string.
-- If no countdown exists, use `null`, not fake zeros.
-- If no mission is active, use `null` for `mission_id` and `mission_target`.
-- Keep `worldData` global and scene-focused.
-- Do not bloat `worldData` with encyclopedic lore.
+Rules:
+- use `null` for absent countdown/timer values
+- if mission inactive: `mission_id = null`, `mission_target = null`
 
 ---
 
-## 7. Player invariants
-
-`playerState` must always exist.
-
-Required invariants:
-- `id` is always `player`
-- `tracked_tier` is always `primary`
-- player exists exactly once
-- player must never be duplicated inside `characters[]`
-
-Player is not a separate schema species.
-Player uses the same canonical top-level entity shape and the same shared domain schemas.
-
----
-
-## 8. Shared `social` block
-
+## 6) Shared `social` schema (single schema for all entities)
 This is the richest domain layer.
-It must be identical in schema for player and NPCs.
 
-Do not define one schema for `playerState.social` and another for `characters[].social`.
-That contradiction is forbidden in v5.
-
-### 8.1 Required numeric meters (all 0..100)
-
+Required numeric meters (0..100):
 - `affinity`
 - `desire`
 - `trust`
@@ -336,65 +155,25 @@ That contradiction is forbidden in v5.
 - `bond_need`
 - `arousal`
 
-### 8.2 Required categorical / structured fields
-
+Required structured fields:
 - `mask`
 - `reaction_icon`
 - `notable_links`
 
-### 8.3 Optional fields
-
+Optional:
 - `internal_thought`
 - `social_flags`
 
-### 8.4 `mask` enum
+`mask` enum:
+`closed | guarded | neutral | open | friendly | performative | cold | detached | composed | shaken | cracked`
 
-- `closed`
-- `guarded`
-- `neutral`
-- `open`
-- `friendly`
-- `performative`
-- `cold`
-- `detached`
-- `composed`
-- `shaken`
-- `cracked`
+`reaction_icon` enum:
+`none | pleased | neutral | flustered | jealous | wary | cold | hostile`
 
-### 8.5 `reaction_icon` enum
+`notable_links[].bond` enum:
+`stranger | acquaintance | classmate | teammate | uneasy_ally | ally | trusted | protective | dependent | romantic_tension | crush | intimate | obsessed | rival | hostile | fractured`
 
-- `none`
-- `pleased`
-- `neutral`
-- `flustered`
-- `jealous`
-- `wary`
-- `cold`
-- `hostile`
-
-### 8.6 Bond vocabulary for `social.notable_links[].bond`
-
-- `stranger`
-- `acquaintance`
-- `classmate`
-- `teammate`
-- `uneasy_ally`
-- `ally`
-- `trusted`
-- `protective`
-- `dependent`
-- `romantic_tension`
-- `crush`
-- `intimate`
-- `obsessed`
-- `rival`
-- `hostile`
-- `fractured`
-
-### 8.7 `social.notable_links` entry shape
-
-Use one stable shape only:
-
+`notable_links` entry shape:
 ```json
 {
   "target_id": "kei_kurono",
@@ -410,24 +189,12 @@ Use one stable shape only:
 }
 ```
 
-### 8.8 Rules
-
-- keep only 1-5 meaningful links,
-- do not create links for disposable extras,
-- do not invent a second relationship structure elsewhere,
-- if a field is less relevant in a given moment, keep the field and use stable low/neutral values rather than deleting it,
-- do not reintroduce `stress`, `devotion`, `interest`, or other special-case social fields as schema branches,
-- do not add top-level `bond_label` outside `notable_links`.
+Limit links to 1..5 meaningful entries.
 
 ---
 
-## 9. Shared `combat` block
-
-Combat is intentionally smaller than social.
-It exists for practical continuity, not for simulation fetishism.
-
-### 9.1 Required fields
-
+## 7) Shared `combat` schema (compact)
+Required:
 - `health`
 - `injuries`
 - `weapon`
@@ -437,32 +204,14 @@ It exists for practical continuity, not for simulation fetishism.
 - `mental_state`
 - `downed`
 
-### 9.2 Optional fields
-
+Optional:
 - `last_combat_note`
 
-### 9.3 `weapon` enum
+Enums:
+- `weapon`: `none | x_gun | x_shotgun | y_gun | gantz_sword | improvised | unknown`
+- `mental_state`: `stable | stressed | shaken | panicked | dissociated | feral | broken`
 
-- `none`
-- `x_gun`
-- `x_shotgun`
-- `y_gun`
-- `gantz_sword`
-- `improvised`
-- `unknown`
-
-### 9.4 `mental_state` enum
-
-- `stable`
-- `stressed`
-- `shaken`
-- `panicked`
-- `dissociated`
-- `feral`
-- `broken`
-
-### 9.5 `injuries` entry shape
-
+`injuries` entry shape:
 ```json
 {
   "key": "rib_fracture",
@@ -472,38 +221,20 @@ It exists for practical continuity, not for simulation fetishism.
 }
 ```
 
-### 9.6 `severity` enum
+`severity` enum: `minor | moderate | severe | critical`
 
-- `minor`
-- `moderate`
-- `severe`
-- `critical`
-
-### 9.7 Rules
-
-- `injuries` must always contain structured objects, never plain strings,
-- do not store ammo simulation,
-- do not store exact coordinates,
-- do not store complex tactics state,
-- no automatic healing without scene justification.
+No ammo economy, coordinates, or tactical simulation layers.
 
 ---
 
-## 10. Shared `world` block
-
-This is the smallest domain layer.
-It is for compact bio / identity / everyday grounding.
-It must not turn into mission-meta clutter.
-
-### 10.1 Required fields
-
+## 8) Shared `world` schema (minimal bio/everyday)
+Required:
 - `role_label`
 - `age`
 - `bio_short`
 - `appearance_short`
 
-### 10.2 Optional fields
-
+Optional:
 - `occupation`
 - `group`
 - `availability`
@@ -511,197 +242,44 @@ It must not turn into mission-meta clutter.
 - `active_goals`
 - `belongings`
 
-### 10.3 `availability` enum
+`availability` enum:
+`available | busy | missing | isolated | hospitalized | dead`
 
-- `available`
-- `busy`
-- `missing`
-- `isolated`
-- `hospitalized`
-- `dead`
-
-### 10.4 Rules
-
-- `age` may be integer, short string, or `null`,
-- `bio_short` must stay 1-3 short sentences,
-- `appearance_short` must remain concise and practical,
-- `active_goals` max 3,
-- `belongings` max 5,
-- keep it bio/everyday-oriented,
-- do not place mission-score or revive-score junk here.
+Limits:
+- `age`: integer, short string, or null
+- `bio_short`: 1..3 short sentences
+- `active_goals`: max 3
+- `belongings`: max 5
 
 ---
 
-## 11. Migration policy from useful legacy concepts
+## 9) Updater discipline (must be in `sysPrompt`)
+- Treat latest valid `disp` as authoritative state
+- Preserve values unless scene justifies change
+- Update only affected fields
+- Never invent keys
+- Never silently remove relevant entities
+- Keep dead entities (do not delete)
+- If dead: `status = dead` and `combat.health = 0`
 
-Old dating/world concepts are not invalid as concepts.
-Blind literal legacy schema copying is invalid.
+Validation checklist before output:
+- root keys/order valid
+- player exists exactly once
+- no duplicate IDs
+- enums valid
+- numeric ranges clamped
+- injuries are structured objects
+- goals/belongings limits respected
 
-Use this migration logic:
-- `affinity` -> valid `social` meter
-- `desire` -> valid `social` meter
-- `connections` -> `social.notable_links`
-- `belongings` -> `world.belongings`
-- `goals` -> `world.active_goals`
-- `reactionIcon` -> `social.reaction_icon`
-- `bg` -> UI-only, never narrative state
-- `inactiveReason` -> derive from `status`, `presence`, `health`, and context
-
-Do not recreate the legacy template under a new file name.
-
----
-
-## 12. Numeric policy
-
-- all `social` meters are `0..100`
-- `health` is `0..100`
-- `combat_readiness`, `panic`, `aggression` are `0..100`
-- clamp all numeric values into valid ranges before output
+Fallback policy:
+- attempt safe repair on invalid new state
+- if repair unsafe, return previous valid state unchanged
 
 ---
 
-## 13. Lifecycle rules
-
-- Keep cards for offscreen but relevant NPCs.
-- Do not create cards for nameless crowds or disposable extras.
-- Promotion path: `temporary -> support -> major`.
-- If dead: keep the card, set `status = dead`, keep continuity, set `combat.health = 0`.
-- Do not silently delete dead or still-relevant entities.
-
----
-
-## 14. Updater discipline
-
-The preset must instruct the updater model to behave conservatively.
-
-Required hard rules:
-- read the latest valid `disp` block as authoritative state,
-- preserve values unless the scene justifies change,
-- update only fields touched by scene events,
-- never invent new keys,
-- never silently remove still-relevant entities,
-- self-repair missing required keys conservatively,
-- prefer stable continuity over dramatic volatility.
-
-### 14.1 Change tempo buckets
-
-#### Fast-changing
-- `panic`
-- `aggression`
-- `arousal`
-- `combat_readiness`
-- `health`
-
-#### Medium-changing
-- `comfort`
-- `tension`
-- `openness`
-- `dependency`
-- `loneliness`
-- `bond_need`
-
-#### Slow-changing
-- `affinity`
-- `desire`
-- `trust`
-- `intimacy`
-- `attachment`
-- `world.active_goals`
-
-### 14.2 Explicit forbidden jumps
-
-Do not do the following without strong scene justification:
-- `affinity +20` from one pleasant exchange
-- `desire +25` from a minor gesture
-- `intimacy +30` from incidental contact
-- `panic -> 0` immediately after slaughter
-- `health +30` without treatment
-- deleting a dead but narratively important entity
-
----
-
-## 15. Validation rules
-
-The preset instructions must be validator-friendly.
-
-Validate before output:
-- root keys exist and are ordered,
-- player exists exactly once,
-- no duplicate IDs,
-- enums are valid,
-- numeric values are capped,
-- no out-of-schema keys,
-- `injuries` are structured,
-- `active_goals` and `belongings` respect limits,
-- only one canonical entity shape is used,
-- no top-level `relations` block exists.
-
-### 15.1 Fallback policy
-
-If the new tracker state fails validation:
-1. attempt safe repair if reliable
-2. otherwise return the previous valid state unchanged
-
-A stable old state is better than a fresh broken one.
-
----
-
-## 16. `sysPrompt` requirements
-
-When encoding the final preset, make sure the `sysPrompt` clearly contains:
-- strict final `disp` output contract,
-- exact root model,
-- exact entity shape,
-- shared `social` schema for both player and NPCs,
-- compact shared `combat`,
-- minimal shared `world`,
-- lifecycle rules,
-- validation rules,
-- fallback policy,
-- updater discipline,
-- forbidden jumps.
-
-Do not make the `sysPrompt` vague.
-Do not compress away critical invariants.
-
----
-
-## 17. Acceptance criteria
-
-This task is complete only if all statements below are true:
-
-1. Root schema remains exactly `worldData + playerState + characters`
-2. Player is explicitly tracked
-3. One canonical entity shape is used
-4. Player and NPCs share the same `social` schema
-5. There is no top-level `relations` block
-6. Each entity has exactly three domain blocks: `social`, `combat`, `world`
-7. Social is the richest layer
-8. Combat is compact
-9. World is minimal bio/everyday grounding
-10. Relationship data exists only in `social.notable_links`
-11. Dead/offscreen relevant entities are preserved
-12. Strict `disp` compatibility is preserved
-13. Wrapper-level preset structure is preserved
-14. `extSettings.templateFile` still points to `gantz-simtracker-template.html`
-
----
-
-## 18. Final instruction
-
-Implement the preset exactly as specified.
-
-When a detail is underspecified:
-- preserve schema stability,
-- preserve player-explicit tracking,
-- preserve the three-domain design,
-- preserve shared social schema,
-- preserve conservative updater behavior,
-- preserve strict state/display separation,
-- prefer the most conservative implementation consistent with this document.
-
-Do not redesign the model.
-Do not split player and NPC social schemas.
-Do not reintroduce a top-level `relations` block.
-Do not turn the tracker into combat-only minimalism.
-Do not smuggle UI state into narrative state.
+## 10) Explicit contradictions resolved in v5
+1. **No player/NPC schema split**: one shared entity schema and one shared social schema.
+2. **No top-level relations block**: relationship semantics are only `social.notable_links`.
+3. **Social-heavy restored**: social is richest; combat/world are intentionally smaller.
+4. **No legacy blind copy**: preserve useful legacy ideas, but not old field layout.
+5. **State/UI separation**: no UI-only fields in canonical narrative state.
