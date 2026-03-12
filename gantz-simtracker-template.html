@@ -1,98 +1,99 @@
 <!-- POSITION: RIGHT -->
 <style>
-  .gst-root {
-    --c-bg-1: rgba(12, 18, 28, .92);
-    --c-bg-2: rgba(20, 29, 45, .96);
-    --c-ln: rgba(130, 170, 235, .28);
-    --c-tx: #e8f0ff;
-    --c-sub: #93a5c7;
-    --c-hi: #6ea8ff;
-    --c-ok: #58cf9d;
-    --c-w: #e7bb77;
-    --r: 14px;
+  .gantz-sst {
+    --panel-a: rgba(10, 14, 20, 0.92);
+    --panel-b: rgba(20, 24, 32, 0.96);
+    --line: rgba(188, 72, 88, 0.34);
+    --line-soft: rgba(168, 174, 192, 0.22);
+    --text: #e9edf7;
+    --sub: #9ca4b8;
+    --accent: #c54f62;
+    --accent-2: #7f2430;
+    --ok: #6fd2a4;
+    --warn: #f3bf78;
 
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    color: var(--c-tx);
-    font-family: Inter, "Segoe UI", Roboto, sans-serif;
     pointer-events: none !important;
+    color: var(--text);
+    font-family: Inter, "Segoe UI", Roboto, sans-serif;
   }
 
-  .gst-root * { box-sizing: border-box; }
+  .gantz-sst * { box-sizing: border-box; }
 
-  .gst-rail,
-  .gst-cards {
+  .gantz-sst .sst-rail,
+  .gantz-sst .sst-cards {
     grid-column: 1;
     grid-row: 1;
     width: 100%;
     height: 100%;
   }
 
-  .gst-rail {
+  .gantz-sst .sst-rail {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     justify-content: center;
+    align-items: flex-end;
     pointer-events: none !important;
   }
 
-  .sim-tracker-tab {
+  .gantz-sst .sim-tracker-tab {
     pointer-events: auto !important;
     width: 56px;
     min-height: 56px;
-    margin: 4px 8px;
-    border: 1px solid var(--c-ln);
+    margin: 5px 8px;
+    border: 1px solid var(--line-soft);
     border-radius: 12px;
-    background: linear-gradient(150deg, rgba(30, 41, 62, .92), rgba(13, 20, 31, .95));
-    color: var(--c-tx);
     display: grid;
     place-items: center;
     cursor: pointer;
-    transition: transform .16s ease, border-color .16s ease;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, .45);
+    color: var(--text);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.46);
     backdrop-filter: blur(10px);
+    transition: transform 170ms ease, border-color 170ms ease;
+    background: linear-gradient(150deg, rgba(33, 37, 47, 0.93), rgba(15, 18, 25, 0.95));
   }
 
-  .sim-tracker-tab:hover,
-  .sim-tracker-tab.active {
-    transform: translateX(-348px);
-    border-color: rgba(165, 201, 255, .7);
+  .gantz-sst .sim-tracker-tab:hover,
+  .gantz-sst .sim-tracker-tab.active {
+    transform: translateX(-350px);
+    border-color: var(--line);
   }
 
-  .gst-icon {
-    width: 36px;
-    min-height: 36px;
+  .gantz-sst .sst-glyph {
+    width: 34px;
+    min-height: 34px;
     border-radius: 999px;
-    border: 1px solid rgba(167, 206, 255, .44);
-    background: radial-gradient(circle at 30% 30%, rgba(120, 174, 255, .9), rgba(47, 79, 132, .95));
+    border: 1px solid rgba(212, 121, 134, 0.56);
     display: grid;
     place-items: center;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1.1;
     text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.05;
     padding: 4px;
+    background: radial-gradient(circle at 28% 24%, rgba(222, 108, 128, 0.9), rgba(93, 32, 45, 0.95));
   }
 
-  .gst-mini {
+  .gantz-sst .sst-mini {
     margin-top: 4px;
     font-size: 9px;
-    color: var(--c-sub);
+    color: var(--sub);
     text-transform: uppercase;
-    letter-spacing: .03em;
+    letter-spacing: 0.03em;
   }
 
-  .gst-cards {
+  .gantz-sst .sst-cards {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: center;
     pointer-events: none !important;
   }
 
-  .sim-tracker-card {
+  .gantz-sst .sim-tracker-card {
     pointer-events: auto !important;
     position: absolute;
     right: 0;
@@ -100,399 +101,402 @@
     transform: translateY(-50%) translateX(104%);
     opacity: 0;
     visibility: hidden;
-    width: min(370px, 92vw);
+    width: min(368px, 92vw);
     max-height: 88vh;
     overflow: auto;
-    border: 1px solid var(--c-ln);
-    border-radius: var(--r);
-    background: linear-gradient(165deg, var(--c-bg-1), var(--c-bg-2));
-    box-shadow: 0 18px 36px rgba(0, 0, 0, .48);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    box-shadow: 0 20px 38px rgba(0, 0, 0, 0.52);
     backdrop-filter: blur(12px);
     padding: 12px;
-    transition: transform .2s ease, opacity .2s ease;
+    transition: transform 220ms ease, opacity 220ms ease;
+    background: linear-gradient(160deg, var(--panel-a), var(--panel-b));
   }
 
-  .sim-tracker-card.active {
+  .gantz-sst .sim-tracker-card.active {
     transform: translateY(-50%) translateX(0);
     opacity: 1;
     visibility: visible;
   }
 
-  .gst-pri { border-color: rgba(154, 214, 255, .58); }
-
-  .gst-hd { display: grid; margin-bottom: 8px; }
-  .gst-name { font-size: 17px; font-weight: 700; }
-
-  .gst-chip-row { margin-top: 6px; }
-  .gst-chip {
-    display: inline-flex;
-    border: 1px solid rgba(149, 176, 225, .3);
-    border-radius: 999px;
-    color: var(--c-sub);
-    font-size: 11px;
-    margin: 0 6px 6px 0;
-    padding: 3px 8px;
+  .gantz-sst .sst-player {
+    border-color: rgba(214, 112, 130, 0.58);
   }
 
-  .gst-rad { display: none; }
-  .gst-dom-row {
+  .gantz-sst .sst-head {
+    display: grid;
+    margin-bottom: 8px;
+    gap: 6px;
+  }
+
+  .gantz-sst .sst-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .gantz-sst .sst-chip {
+    display: inline-flex;
+    border: 1px solid var(--line-soft);
+    border-radius: 999px;
+    color: var(--sub);
+    font-size: 11px;
+    padding: 3px 8px;
+    margin: 0 6px 6px 0;
+  }
+
+  .gantz-sst .sst-radio { display: none; }
+
+  .gantz-sst .sst-tabs {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    margin-top: 4px;
+    gap: 6px;
+    margin-top: 3px;
   }
 
-  .gst-dom {
-    border: 1px solid rgba(145, 174, 223, .3);
+  .gantz-sst .sst-tab {
+    border: 1px solid var(--line-soft);
     border-radius: 10px;
     text-align: center;
-    color: #ceddff;
     font-size: 12px;
     font-weight: 600;
-    cursor: pointer;
+    color: #d3d9e7;
     padding: 6px 4px;
-    margin-right: 6px;
-    background: rgba(75, 101, 147, .17);
+    cursor: pointer;
+    background: rgba(62, 67, 80, 0.36);
   }
 
-  .gst-dom:last-child { margin-right: 0; }
-
-  .gst-rad[data-mode="dating"]:checked ~ .gst-dom-row label[for$="-dating"],
-  .gst-rad[data-mode="combat"]:checked ~ .gst-dom-row label[for$="-combat"],
-  .gst-rad[data-mode="world"]:checked ~ .gst-dom-row label[for$="-world"] {
-    border-color: rgba(171, 209, 255, .65);
-    background: rgba(95, 148, 229, .3);
-    color: #f2f8ff;
+  .gantz-sst .sst-radio[data-dom="dating"]:checked ~ .sst-tabs label[for$="-dating"],
+  .gantz-sst .sst-radio[data-dom="combat"]:checked ~ .sst-tabs label[for$="-combat"],
+  .gantz-sst .sst-radio[data-dom="world"]:checked ~ .sst-tabs label[for$="-world"] {
+    border-color: var(--line);
+    color: #f5f7ff;
+    background: linear-gradient(140deg, rgba(121, 35, 49, 0.56), rgba(56, 20, 28, 0.56));
   }
 
-  .gst-box { display: none; margin-top: 10px; }
-  .gst-rad[data-mode="dating"]:checked ~ .gst-box[data-mode="dating"],
-  .gst-rad[data-mode="combat"]:checked ~ .gst-box[data-mode="combat"],
-  .gst-rad[data-mode="world"]:checked ~ .gst-box[data-mode="world"] { display: block; }
+  .gantz-sst .sst-pane { display: none; margin-top: 10px; }
+  .gantz-sst .sst-radio[data-dom="dating"]:checked ~ .sst-pane[data-dom="dating"],
+  .gantz-sst .sst-radio[data-dom="combat"]:checked ~ .sst-pane[data-dom="combat"],
+  .gantz-sst .sst-radio[data-dom="world"]:checked ~ .sst-pane[data-dom="world"] {
+    display: block;
+  }
 
-  .gst-grid {
+  .gantz-sst .sst-meter-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
-  .gst-mtr {
-    border: 1px solid rgba(147, 174, 222, .25);
+  .gantz-sst .sst-meter {
+    border: 1px solid var(--line-soft);
     border-radius: 10px;
-    background: rgba(80, 104, 147, .13);
-    margin: 0 8px 8px 0;
+    background: rgba(64, 70, 86, 0.28);
     padding: 6px;
   }
 
-  .gst-mtr:nth-child(2n) { margin-right: 0; }
-
-  .gst-top {
+  .gantz-sst .sst-meter-top {
     display: flex;
     justify-content: space-between;
     font-size: 11px;
+    color: #dce2ef;
   }
 
-  .gst-ln {
+  .gantz-sst .sst-meter-rail {
     height: 5px;
     border-radius: 999px;
     margin-top: 5px;
+    background: rgba(139, 147, 169, 0.25);
     overflow: hidden;
-    background: rgba(152, 179, 226, .2);
   }
 
-  .gst-v {
+  .gantz-sst .sst-meter-fill {
     height: 100%;
-    background: linear-gradient(90deg, #6995f3, #65d4f3);
+    background: linear-gradient(90deg, rgba(214, 89, 110, 0.96), rgba(117, 32, 46, 0.98));
   }
 
-  .gst-sec { margin-top: 8px; }
-  .gst-sec-h {
+  .gantz-sst .sst-sec { margin-top: 9px; }
+  .gantz-sst .sst-sec-title {
     margin: 0 0 6px;
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: .12em;
-    color: var(--c-sub);
+    letter-spacing: 0.12em;
+    color: var(--sub);
   }
 
-  .gst-row {
+  .gantz-sst .sst-row {
     display: flex;
     justify-content: space-between;
+    gap: 10px;
     font-size: 12px;
     margin-bottom: 6px;
-    gap: 10px;
   }
 
-  .gst-k { color: var(--c-sub); }
-  .gst-z { text-align: right; color: var(--c-tx); }
+  .gantz-sst .sst-key { color: var(--sub); }
+  .gantz-sst .sst-val { text-align: right; color: var(--text); }
 
-  .gst-note {
-    font-size: 12px;
-    color: #d7e4ff;
-    line-height: 1.4;
-  }
-
-  .gst-list { margin-top: 2px; }
-  .gst-it {
-    border: 1px solid rgba(142, 171, 222, .25);
+  .gantz-sst .sst-list-item {
+    border: 1px solid var(--line-soft);
     border-radius: 10px;
-    background: rgba(78, 102, 143, .13);
+    background: rgba(66, 72, 90, 0.28);
     font-size: 12px;
     padding: 7px;
     margin-bottom: 6px;
   }
 
-  .gst-soft { color: var(--c-sub); font-size: 12px; }
+  .gantz-sst .sst-note { font-size: 12px; line-height: 1.4; color: #dbe1ef; }
+  .gantz-sst .sst-soft { font-size: 12px; color: var(--sub); }
 
   @media (max-width: 740px) {
-    .sim-tracker-tab:hover,
-    .sim-tracker-tab.active { transform: translateX(-306px); }
-    .sim-tracker-card { width: min(314px, 92vw); }
-    .gst-grid { grid-template-columns: 1fr; }
-    .gst-mtr { margin-right: 0; }
+    .gantz-sst .sim-tracker-tab:hover,
+    .gantz-sst .sim-tracker-tab.active {
+      transform: translateX(-305px);
+    }
+
+    .gantz-sst .sim-tracker-card {
+      width: min(314px, 92vw);
+    }
+
+    .gantz-sst .sst-meter-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 
-<div class="gst-root">
-  <div class="gst-rail">
-    <button class="sim-tracker-tab gst-pri" data-character="{{playerState.id}}" title="{{playerState.name}}">
-      <b class="gst-icon">{{#if playerState.icon_key}}{{playerState.icon_key}}{{else}}{{playerState.name}}{{/if}}</b>
-      <i class="gst-mini">{{playerState.tracked_tier}}</i>
+<div class="gantz-sst">
+  <div class="sst-rail">
+    <button class="sim-tracker-tab sst-player" data-character="{{playerState.id}}" title="{{playerState.name}}">
+      <span class="sst-glyph">{{#if playerState.icon_key}}{{playerState.icon_key}}{{else}}{{playerState.name}}{{/if}}</span>
+      <span class="sst-mini">{{playerState.tracked_tier}}</span>
     </button>
 
     {{#each characters}}
     <button class="sim-tracker-tab" data-character="{{id}}" title="{{name}}">
-      <b class="gst-icon">{{#if icon_key}}{{icon_key}}{{else}}{{name}}{{/if}}</b>
-      <i class="gst-mini">{{tracked_tier}}</i>
+      <span class="sst-glyph">{{#if icon_key}}{{icon_key}}{{else}}{{name}}{{/if}}</span>
+      <span class="sst-mini">{{tracked_tier}}</span>
     </button>
     {{/each}}
   </div>
 
-  <div class="gst-cards">
-    <section class="sim-tracker-card gst-pri" data-character="{{playerState.id}}">
-      <div class="gst-hd">
-        <div class="gst-name">{{playerState.name}}</div>
-        <div class="gst-chip-row">
-          <b class="gst-chip">{{playerState.sex}}</b>
-          <b class="gst-chip">{{playerState.ui_variant}}</b>
-          <b class="gst-chip">{{playerState.status}}</b>
-          <b class="gst-chip">{{playerState.presence}}</b>
+  <div class="sst-cards">
+    <section class="sim-tracker-card sst-player" data-character="{{playerState.id}}">
+      <div class="sst-head">
+        <div class="sst-name">{{playerState.name}}</div>
+        <div>
+          <span class="sst-chip">{{playerState.sex}}</span>
+          <span class="sst-chip">{{playerState.ui_variant}}</span>
+          <span class="sst-chip">{{playerState.status}}</span>
+          <span class="sst-chip">{{playerState.presence}}</span>
         </div>
       </div>
 
-      <input class="gst-rad" data-mode="dating" type="radio" id="p-mode-dating" name="p-mode" checked>
-      <input class="gst-rad" data-mode="combat" type="radio" id="p-mode-combat" name="p-mode">
-      <input class="gst-rad" data-mode="world" type="radio" id="p-mode-world" name="p-mode">
+      <input class="sst-radio" data-dom="dating" type="radio" id="p-dom-dating" name="p-dom" checked>
+      <input class="sst-radio" data-dom="combat" type="radio" id="p-dom-combat" name="p-dom">
+      <input class="sst-radio" data-dom="world" type="radio" id="p-dom-world" name="p-dom">
 
-      <div class="gst-dom-row">
-        <label class="gst-dom" for="p-mode-dating">Dating</label>
-        <label class="gst-dom" for="p-mode-combat">Combat</label>
-        <label class="gst-dom" for="p-mode-world">World</label>
+      <div class="sst-tabs">
+        <label class="sst-tab" for="p-dom-dating">Dating</label>
+        <label class="sst-tab" for="p-dom-combat">Combat</label>
+        <label class="sst-tab" for="p-dom-world">World</label>
       </div>
 
-      <div class="gst-box" data-mode="dating">
-        <div class="gst-grid">
-          <div class="gst-mtr"><div class="gst-top"><i>affinity</i><i>{{playerState.social.affinity}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.affinity}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>desire</i><i>{{playerState.social.desire}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.desire}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>trust</i><i>{{playerState.social.trust}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.trust}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>comfort</i><i>{{playerState.social.comfort}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.comfort}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>intimacy</i><i>{{playerState.social.intimacy}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.intimacy}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>jealousy</i><i>{{playerState.social.jealousy}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.jealousy}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>tension</i><i>{{playerState.social.tension}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.tension}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>attachment</i><i>{{playerState.social.attachment}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.attachment}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>openness</i><i>{{playerState.social.openness}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.openness}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>dependency</i><i>{{playerState.social.dependency}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.dependency}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>loneliness</i><i>{{playerState.social.loneliness}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.loneliness}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>bond_need</i><i>{{playerState.social.bond_need}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.bond_need}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>arousal</i><i>{{playerState.social.arousal}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{playerState.social.arousal}}%;"></div></div></div>
+      <div class="sst-pane" data-dom="dating">
+        <div class="sst-meter-grid">
+          <div class="sst-meter"><div class="sst-meter-top"><span>affinity</span><span>{{playerState.social.affinity}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.affinity}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>desire</span><span>{{playerState.social.desire}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.desire}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>trust</span><span>{{playerState.social.trust}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.trust}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>comfort</span><span>{{playerState.social.comfort}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.comfort}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>intimacy</span><span>{{playerState.social.intimacy}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.intimacy}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>jealousy</span><span>{{playerState.social.jealousy}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.jealousy}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>tension</span><span>{{playerState.social.tension}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.tension}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>attachment</span><span>{{playerState.social.attachment}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.attachment}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>openness</span><span>{{playerState.social.openness}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.openness}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>dependency</span><span>{{playerState.social.dependency}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.dependency}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>loneliness</span><span>{{playerState.social.loneliness}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.loneliness}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>bond_need</span><span>{{playerState.social.bond_need}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.bond_need}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>arousal</span><span>{{playerState.social.arousal}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{playerState.social.arousal}}%;"></div></div></div>
         </div>
 
-        <div class="gst-sec">
-          <h4 class="gst-sec-h">Signals</h4>
-          <b class="gst-chip">mask: {{playerState.social.mask}}</b>
-          <b class="gst-chip">reaction_icon: {{playerState.social.reaction_icon}}</b>
+        <div class="sst-sec">
+          <h4 class="sst-sec-title">Signals</h4>
+          <span class="sst-chip">mask: {{playerState.social.mask}}</span>
+          <span class="sst-chip">reaction_icon: {{playerState.social.reaction_icon}}</span>
           {{#if playerState.social.social_flags}}
-            {{#each playerState.social.social_flags}}<b class="gst-chip">{{this}}</b>{{/each}}
+            {{#each playerState.social.social_flags}}<span class="sst-chip">{{this}}</span>{{/each}}
           {{/if}}
         </div>
 
         {{#if playerState.social.internal_thought}}
-        <div class="gst-sec"><h4 class="gst-sec-h">Internal thought</h4><div class="gst-note">{{playerState.social.internal_thought}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">Internal thought</h4><div class="sst-note">{{playerState.social.internal_thought}}</div></div>
         {{/if}}
 
-        <div class="gst-sec">
-          <h4 class="gst-sec-h">Notable links</h4>
+        <div class="sst-sec">
+          <h4 class="sst-sec-title">Notable links</h4>
           {{#if playerState.social.notable_links}}
-          <div class="gst-list">
-            {{#each playerState.social.notable_links}}
-            <div class="gst-it">
-              <div><b>{{target_id}}</b> · {{bond}}</div>
-              <div class="gst-soft">aff {{affinity}} · trust {{trust}} · desire {{desire}} · tension {{tension}}</div>
-            </div>
-            {{/each}}
+          {{#each playerState.social.notable_links}}
+          <div class="sst-list-item">
+            <div><strong>{{target_id}}</strong> · {{bond}}</div>
+            <div class="sst-soft">aff {{affinity}} · trust {{trust}} · desire {{desire}} · tension {{tension}}</div>
           </div>
-          {{else}}<div class="gst-soft">No notable links.</div>{{/if}}
+          {{/each}}
+          {{else}}<div class="sst-soft">No notable links.</div>{{/if}}
         </div>
       </div>
 
-      <div class="gst-box" data-mode="combat">
-        <div class="gst-sec">
-          <div class="gst-row"><div class="gst-k">health</div><div class="gst-z">{{playerState.combat.health}}</div></div>
-          <div class="gst-row"><div class="gst-k">weapon</div><div class="gst-z">{{playerState.combat.weapon}}</div></div>
-          <div class="gst-row"><div class="gst-k">combat_readiness</div><div class="gst-z">{{playerState.combat.combat_readiness}}</div></div>
-          <div class="gst-row"><div class="gst-k">panic</div><div class="gst-z">{{playerState.combat.panic}}</div></div>
-          <div class="gst-row"><div class="gst-k">aggression</div><div class="gst-z">{{playerState.combat.aggression}}</div></div>
-          <div class="gst-row"><div class="gst-k">mental_state</div><div class="gst-z">{{playerState.combat.mental_state}}</div></div>
-          <div class="gst-row"><div class="gst-k">downed</div><div class="gst-z">{{playerState.combat.downed}}</div></div>
+      <div class="sst-pane" data-dom="combat">
+        <div class="sst-sec">
+          <div class="sst-row"><div class="sst-key">health</div><div class="sst-val">{{playerState.combat.health}}</div></div>
+          <div class="sst-row"><div class="sst-key">weapon</div><div class="sst-val">{{playerState.combat.weapon}}</div></div>
+          <div class="sst-row"><div class="sst-key">combat_readiness</div><div class="sst-val">{{playerState.combat.combat_readiness}}</div></div>
+          <div class="sst-row"><div class="sst-key">panic</div><div class="sst-val">{{playerState.combat.panic}}</div></div>
+          <div class="sst-row"><div class="sst-key">aggression</div><div class="sst-val">{{playerState.combat.aggression}}</div></div>
+          <div class="sst-row"><div class="sst-key">mental_state</div><div class="sst-val">{{playerState.combat.mental_state}}</div></div>
+          <div class="sst-row"><div class="sst-key">downed</div><div class="sst-val">{{playerState.combat.downed}}</div></div>
         </div>
 
         {{#if playerState.combat.last_combat_note}}
-        <div class="gst-sec"><h4 class="gst-sec-h">last_combat_note</h4><div class="gst-note">{{playerState.combat.last_combat_note}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">last_combat_note</h4><div class="sst-note">{{playerState.combat.last_combat_note}}</div></div>
         {{/if}}
 
-        <div class="gst-sec">
-          <h4 class="gst-sec-h">injuries</h4>
+        <div class="sst-sec">
+          <h4 class="sst-sec-title">injuries</h4>
           {{#if playerState.combat.injuries}}
-          <div class="gst-list">
-            {{#each playerState.combat.injuries}}
-            <div class="gst-it">{{label}} · {{severity}} · treated: {{treated}}</div>
-            {{/each}}
-          </div>
-          {{else}}<div class="gst-soft">No injuries.</div>{{/if}}
+          {{#each playerState.combat.injuries}}
+          <div class="sst-list-item">{{label}} · {{severity}} · treated: {{treated}}</div>
+          {{/each}}
+          {{else}}<div class="sst-soft">No injuries.</div>{{/if}}
         </div>
       </div>
 
-      <div class="gst-box" data-mode="world">
-        <div class="gst-sec">
-          <div class="gst-row"><div class="gst-k">role_label</div><div class="gst-z">{{playerState.world.role_label}}</div></div>
-          <div class="gst-row"><div class="gst-k">age</div><div class="gst-z">{{playerState.world.age}}</div></div>
-          {{#if playerState.world.occupation}}<div class="gst-row"><div class="gst-k">occupation</div><div class="gst-z">{{playerState.world.occupation}}</div></div>{{/if}}
-          {{#if playerState.world.group}}<div class="gst-row"><div class="gst-k">group</div><div class="gst-z">{{playerState.world.group}}</div></div>{{/if}}
-          {{#if playerState.world.availability}}<div class="gst-row"><div class="gst-k">availability</div><div class="gst-z">{{playerState.world.availability}}</div></div>{{/if}}
-          {{#if playerState.world.last_seen_location}}<div class="gst-row"><div class="gst-k">last_seen_location</div><div class="gst-z">{{playerState.world.last_seen_location}}</div></div>{{/if}}
+      <div class="sst-pane" data-dom="world">
+        <div class="sst-sec">
+          <div class="sst-row"><div class="sst-key">role_label</div><div class="sst-val">{{playerState.world.role_label}}</div></div>
+          <div class="sst-row"><div class="sst-key">age</div><div class="sst-val">{{playerState.world.age}}</div></div>
+          {{#if playerState.world.occupation}}<div class="sst-row"><div class="sst-key">occupation</div><div class="sst-val">{{playerState.world.occupation}}</div></div>{{/if}}
+          {{#if playerState.world.group}}<div class="sst-row"><div class="sst-key">group</div><div class="sst-val">{{playerState.world.group}}</div></div>{{/if}}
+          {{#if playerState.world.availability}}<div class="sst-row"><div class="sst-key">availability</div><div class="sst-val">{{playerState.world.availability}}</div></div>{{/if}}
+          {{#if playerState.world.last_seen_location}}<div class="sst-row"><div class="sst-key">last_seen_location</div><div class="sst-val">{{playerState.world.last_seen_location}}</div></div>{{/if}}
         </div>
 
-        <div class="gst-sec"><h4 class="gst-sec-h">bio_short</h4><div class="gst-note">{{playerState.world.bio_short}}</div></div>
-        <div class="gst-sec"><h4 class="gst-sec-h">appearance_short</h4><div class="gst-note">{{playerState.world.appearance_short}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">bio_short</h4><div class="sst-note">{{playerState.world.bio_short}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">appearance_short</h4><div class="sst-note">{{playerState.world.appearance_short}}</div></div>
 
         {{#if playerState.world.active_goals}}
-        <div class="gst-sec"><h4 class="gst-sec-h">active_goals</h4><div class="gst-list">{{#each playerState.world.active_goals}}<div class="gst-it">{{this}}</div>{{/each}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">active_goals</h4>{{#each playerState.world.active_goals}}<div class="sst-list-item">{{this}}</div>{{/each}}</div>
         {{/if}}
         {{#if playerState.world.belongings}}
-        <div class="gst-sec"><h4 class="gst-sec-h">belongings</h4><div class="gst-list">{{#each playerState.world.belongings}}<div class="gst-it">{{this}}</div>{{/each}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">belongings</h4>{{#each playerState.world.belongings}}<div class="sst-list-item">{{this}}</div>{{/each}}</div>
         {{/if}}
       </div>
     </section>
 
     {{#each characters}}
     <section class="sim-tracker-card" data-character="{{id}}">
-      <div class="gst-hd">
-        <div class="gst-name">{{name}}</div>
-        <div class="gst-chip-row">
-          <b class="gst-chip">{{sex}}</b>
-          <b class="gst-chip">{{ui_variant}}</b>
-          <b class="gst-chip">{{status}}</b>
-          <b class="gst-chip">{{presence}}</b>
+      <div class="sst-head">
+        <div class="sst-name">{{name}}</div>
+        <div>
+          <span class="sst-chip">{{sex}}</span>
+          <span class="sst-chip">{{ui_variant}}</span>
+          <span class="sst-chip">{{status}}</span>
+          <span class="sst-chip">{{presence}}</span>
         </div>
       </div>
 
-      <input class="gst-rad" data-mode="dating" type="radio" id="n-{{id}}-dating" name="n-{{id}}" checked>
-      <input class="gst-rad" data-mode="combat" type="radio" id="n-{{id}}-combat" name="n-{{id}}">
-      <input class="gst-rad" data-mode="world" type="radio" id="n-{{id}}-world" name="n-{{id}}">
+      <input class="sst-radio" data-dom="dating" type="radio" id="n-{{id}}-dating" name="n-{{id}}" checked>
+      <input class="sst-radio" data-dom="combat" type="radio" id="n-{{id}}-combat" name="n-{{id}}">
+      <input class="sst-radio" data-dom="world" type="radio" id="n-{{id}}-world" name="n-{{id}}">
 
-      <div class="gst-dom-row">
-        <label class="gst-dom" for="n-{{id}}-dating">Dating</label>
-        <label class="gst-dom" for="n-{{id}}-combat">Combat</label>
-        <label class="gst-dom" for="n-{{id}}-world">World</label>
+      <div class="sst-tabs">
+        <label class="sst-tab" for="n-{{id}}-dating">Dating</label>
+        <label class="sst-tab" for="n-{{id}}-combat">Combat</label>
+        <label class="sst-tab" for="n-{{id}}-world">World</label>
       </div>
 
-      <div class="gst-box" data-mode="dating">
-        <div class="gst-grid">
-          <div class="gst-mtr"><div class="gst-top"><i>affinity</i><i>{{social.affinity}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.affinity}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>desire</i><i>{{social.desire}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.desire}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>trust</i><i>{{social.trust}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.trust}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>comfort</i><i>{{social.comfort}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.comfort}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>intimacy</i><i>{{social.intimacy}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.intimacy}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>jealousy</i><i>{{social.jealousy}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.jealousy}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>tension</i><i>{{social.tension}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.tension}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>attachment</i><i>{{social.attachment}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.attachment}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>openness</i><i>{{social.openness}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.openness}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>dependency</i><i>{{social.dependency}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.dependency}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>loneliness</i><i>{{social.loneliness}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.loneliness}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>bond_need</i><i>{{social.bond_need}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.bond_need}}%;"></div></div></div>
-          <div class="gst-mtr"><div class="gst-top"><i>arousal</i><i>{{social.arousal}}</i></div><div class="gst-ln"><div class="gst-v" style="width: {{social.arousal}}%;"></div></div></div>
+      <div class="sst-pane" data-dom="dating">
+        <div class="sst-meter-grid">
+          <div class="sst-meter"><div class="sst-meter-top"><span>affinity</span><span>{{social.affinity}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.affinity}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>desire</span><span>{{social.desire}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.desire}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>trust</span><span>{{social.trust}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.trust}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>comfort</span><span>{{social.comfort}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.comfort}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>intimacy</span><span>{{social.intimacy}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.intimacy}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>jealousy</span><span>{{social.jealousy}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.jealousy}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>tension</span><span>{{social.tension}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.tension}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>attachment</span><span>{{social.attachment}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.attachment}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>openness</span><span>{{social.openness}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.openness}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>dependency</span><span>{{social.dependency}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.dependency}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>loneliness</span><span>{{social.loneliness}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.loneliness}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>bond_need</span><span>{{social.bond_need}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.bond_need}}%;"></div></div></div>
+          <div class="sst-meter"><div class="sst-meter-top"><span>arousal</span><span>{{social.arousal}}</span></div><div class="sst-meter-rail"><div class="sst-meter-fill" style="width: {{social.arousal}}%;"></div></div></div>
         </div>
 
-        <div class="gst-sec">
-          <h4 class="gst-sec-h">Signals</h4>
-          <b class="gst-chip">mask: {{social.mask}}</b>
-          <b class="gst-chip">reaction_icon: {{social.reaction_icon}}</b>
+        <div class="sst-sec">
+          <h4 class="sst-sec-title">Signals</h4>
+          <span class="sst-chip">mask: {{social.mask}}</span>
+          <span class="sst-chip">reaction_icon: {{social.reaction_icon}}</span>
           {{#if social.social_flags}}
-            {{#each social.social_flags}}<b class="gst-chip">{{this}}</b>{{/each}}
+            {{#each social.social_flags}}<span class="sst-chip">{{this}}</span>{{/each}}
           {{/if}}
         </div>
 
         {{#if social.internal_thought}}
-        <div class="gst-sec"><h4 class="gst-sec-h">Internal thought</h4><div class="gst-note">{{social.internal_thought}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">Internal thought</h4><div class="sst-note">{{social.internal_thought}}</div></div>
         {{/if}}
 
-        <div class="gst-sec">
-          <h4 class="gst-sec-h">Notable links</h4>
+        <div class="sst-sec">
+          <h4 class="sst-sec-title">Notable links</h4>
           {{#if social.notable_links}}
-          <div class="gst-list">
-            {{#each social.notable_links}}
-            <div class="gst-it">
-              <div><b>{{target_id}}</b> · {{bond}}</div>
-              <div class="gst-soft">aff {{affinity}} · trust {{trust}} · desire {{desire}} · tension {{tension}}</div>
-            </div>
-            {{/each}}
+          {{#each social.notable_links}}
+          <div class="sst-list-item">
+            <div><strong>{{target_id}}</strong> · {{bond}}</div>
+            <div class="sst-soft">aff {{affinity}} · trust {{trust}} · desire {{desire}} · tension {{tension}}</div>
           </div>
-          {{else}}<div class="gst-soft">No notable links.</div>{{/if}}
+          {{/each}}
+          {{else}}<div class="sst-soft">No notable links.</div>{{/if}}
         </div>
       </div>
 
-      <div class="gst-box" data-mode="combat">
-        <div class="gst-sec">
-          <div class="gst-row"><div class="gst-k">health</div><div class="gst-z">{{combat.health}}</div></div>
-          <div class="gst-row"><div class="gst-k">weapon</div><div class="gst-z">{{combat.weapon}}</div></div>
-          <div class="gst-row"><div class="gst-k">combat_readiness</div><div class="gst-z">{{combat.combat_readiness}}</div></div>
-          <div class="gst-row"><div class="gst-k">panic</div><div class="gst-z">{{combat.panic}}</div></div>
-          <div class="gst-row"><div class="gst-k">aggression</div><div class="gst-z">{{combat.aggression}}</div></div>
-          <div class="gst-row"><div class="gst-k">mental_state</div><div class="gst-z">{{combat.mental_state}}</div></div>
-          <div class="gst-row"><div class="gst-k">downed</div><div class="gst-z">{{combat.downed}}</div></div>
+      <div class="sst-pane" data-dom="combat">
+        <div class="sst-sec">
+          <div class="sst-row"><div class="sst-key">health</div><div class="sst-val">{{combat.health}}</div></div>
+          <div class="sst-row"><div class="sst-key">weapon</div><div class="sst-val">{{combat.weapon}}</div></div>
+          <div class="sst-row"><div class="sst-key">combat_readiness</div><div class="sst-val">{{combat.combat_readiness}}</div></div>
+          <div class="sst-row"><div class="sst-key">panic</div><div class="sst-val">{{combat.panic}}</div></div>
+          <div class="sst-row"><div class="sst-key">aggression</div><div class="sst-val">{{combat.aggression}}</div></div>
+          <div class="sst-row"><div class="sst-key">mental_state</div><div class="sst-val">{{combat.mental_state}}</div></div>
+          <div class="sst-row"><div class="sst-key">downed</div><div class="sst-val">{{combat.downed}}</div></div>
         </div>
 
         {{#if combat.last_combat_note}}
-        <div class="gst-sec"><h4 class="gst-sec-h">last_combat_note</h4><div class="gst-note">{{combat.last_combat_note}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">last_combat_note</h4><div class="sst-note">{{combat.last_combat_note}}</div></div>
         {{/if}}
 
-        <div class="gst-sec">
-          <h4 class="gst-sec-h">injuries</h4>
+        <div class="sst-sec">
+          <h4 class="sst-sec-title">injuries</h4>
           {{#if combat.injuries}}
-          <div class="gst-list">
-            {{#each combat.injuries}}
-            <div class="gst-it">{{label}} · {{severity}} · treated: {{treated}}</div>
-            {{/each}}
-          </div>
-          {{else}}<div class="gst-soft">No injuries.</div>{{/if}}
+          {{#each combat.injuries}}
+          <div class="sst-list-item">{{label}} · {{severity}} · treated: {{treated}}</div>
+          {{/each}}
+          {{else}}<div class="sst-soft">No injuries.</div>{{/if}}
         </div>
       </div>
 
-      <div class="gst-box" data-mode="world">
-        <div class="gst-sec">
-          <div class="gst-row"><div class="gst-k">role_label</div><div class="gst-z">{{world.role_label}}</div></div>
-          <div class="gst-row"><div class="gst-k">age</div><div class="gst-z">{{world.age}}</div></div>
-          {{#if world.occupation}}<div class="gst-row"><div class="gst-k">occupation</div><div class="gst-z">{{world.occupation}}</div></div>{{/if}}
-          {{#if world.group}}<div class="gst-row"><div class="gst-k">group</div><div class="gst-z">{{world.group}}</div></div>{{/if}}
-          {{#if world.availability}}<div class="gst-row"><div class="gst-k">availability</div><div class="gst-z">{{world.availability}}</div></div>{{/if}}
-          {{#if world.last_seen_location}}<div class="gst-row"><div class="gst-k">last_seen_location</div><div class="gst-z">{{world.last_seen_location}}</div></div>{{/if}}
+      <div class="sst-pane" data-dom="world">
+        <div class="sst-sec">
+          <div class="sst-row"><div class="sst-key">role_label</div><div class="sst-val">{{world.role_label}}</div></div>
+          <div class="sst-row"><div class="sst-key">age</div><div class="sst-val">{{world.age}}</div></div>
+          {{#if world.occupation}}<div class="sst-row"><div class="sst-key">occupation</div><div class="sst-val">{{world.occupation}}</div></div>{{/if}}
+          {{#if world.group}}<div class="sst-row"><div class="sst-key">group</div><div class="sst-val">{{world.group}}</div></div>{{/if}}
+          {{#if world.availability}}<div class="sst-row"><div class="sst-key">availability</div><div class="sst-val">{{world.availability}}</div></div>{{/if}}
+          {{#if world.last_seen_location}}<div class="sst-row"><div class="sst-key">last_seen_location</div><div class="sst-val">{{world.last_seen_location}}</div></div>{{/if}}
         </div>
 
-        <div class="gst-sec"><h4 class="gst-sec-h">bio_short</h4><div class="gst-note">{{world.bio_short}}</div></div>
-        <div class="gst-sec"><h4 class="gst-sec-h">appearance_short</h4><div class="gst-note">{{world.appearance_short}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">bio_short</h4><div class="sst-note">{{world.bio_short}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">appearance_short</h4><div class="sst-note">{{world.appearance_short}}</div></div>
 
         {{#if world.active_goals}}
-        <div class="gst-sec"><h4 class="gst-sec-h">active_goals</h4><div class="gst-list">{{#each world.active_goals}}<div class="gst-it">{{this}}</div>{{/each}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">active_goals</h4>{{#each world.active_goals}}<div class="sst-list-item">{{this}}</div>{{/each}}</div>
         {{/if}}
         {{#if world.belongings}}
-        <div class="gst-sec"><h4 class="gst-sec-h">belongings</h4><div class="gst-list">{{#each world.belongings}}<div class="gst-it">{{this}}</div>{{/each}}</div></div>
+        <div class="sst-sec"><h4 class="sst-sec-title">belongings</h4>{{#each world.belongings}}<div class="sst-list-item">{{this}}</div>{{/each}}</div>
         {{/if}}
       </div>
     </section>
@@ -505,17 +509,21 @@
   const root = document.currentScript && document.currentScript.previousElementSibling;
   if (!root) return;
 
-  const tabList = root.querySelectorAll('.sim-tracker-tab[data-character]');
-  const cardList = root.querySelectorAll('.sim-tracker-card[data-character]');
+  const tabs = root.querySelectorAll('.sim-tracker-tab[data-character]');
+  const cards = root.querySelectorAll('.sim-tracker-card[data-character]');
 
-  function setOn(charKey) {
-    tabList.forEach(btn => btn.classList.toggle('active', btn.dataset.character === charKey));
-    cardList.forEach(card => card.classList.toggle('active', card.dataset.character === charKey));
+  function activate(charKey) {
+    tabs.forEach(function (tab) {
+      tab.classList.toggle('active', tab.dataset.character === charKey);
+    });
+    cards.forEach(function (card) {
+      card.classList.toggle('active', card.dataset.character === charKey);
+    });
   }
 
-  tabList.forEach((btn, idx) => {
-    btn.addEventListener('click', function () { setOn(btn.dataset.character); });
-    if (idx === 0) setOn(btn.dataset.character);
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { activate(tab.dataset.character); });
+    if (i === 0) activate(tab.dataset.character);
   });
 })();
 </script>
